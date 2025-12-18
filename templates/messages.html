@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Messages - Patient Health Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #1a1a1a;
+            color: #e0e0e0;
+            line-height: 1.6;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #ff6b00 0%, #ff8c00 100%);
+            color: white;
+            padding: 1.5rem 2rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        }
+        
+        .header h1 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        
+        .nav-bar {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .nav-link {
+            color: white;
+            text-decoration: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+            font-weight: 500;
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .nav-link:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        
+        .nav-link.active {
+            background-color: rgba(0, 0, 0, 0.3);
+            font-weight: 600;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+        
+        .page-title {
+            background: linear-gradient(135deg, #2d2d2d 0%, #1f1f1f 100%);
+            padding: 2rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            border-left: 4px solid #ff6b00;
+        }
+        
+        .page-title h2 {
+            color: #ff8c00;
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .message-card {
+            background: linear-gradient(135deg, #2d2d2d 0%, #1f1f1f 100%);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            border-left: 4px solid #ff6b00;
+            transition: transform 0.3s ease;
+        }
+        
+        .message-card.unread {
+            border-left-color: #60a5fa;
+            border-left-width: 6px;
+        }
+        
+        .message-card:hover {
+            transform: translateX(5px);
+        }
+        
+        .message-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        
+        .message-sender {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #ff8c00;
+        }
+        
+        .message-date {
+            color: #888;
+            font-size: 0.9rem;
+        }
+        
+        .message-subject {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #d0d0d0;
+            margin-bottom: 1rem;
+        }
+        
+        .message-text {
+            color: #b0b0b0;
+            line-height: 1.8;
+            padding: 1rem;
+            background-color: #2a2a2a;
+            border-radius: 5px;
+            border-left: 3px solid #ff6b00;
+        }
+        
+        .unread-badge {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            background-color: #1e3a5f;
+            color: #60a5fa;
+            border: 1px solid #60a5fa;
+        }
+        
+        .mark-read-btn {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background: linear-gradient(135deg, #ff6b00 0%, #ff8c00 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .mark-read-btn:hover {
+            background: linear-gradient(135deg, #ff8c00 0%, #ffa500 100%);
+            transform: translateY(-2px);
+        }
+        
+        .message-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        /* Mobile responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 1rem;
+            }
+            
+            .header h1 {
+                font-size: 1.4rem;
+            }
+            
+            .nav-bar {
+                gap: 0.5rem;
+            }
+            
+            .nav-link {
+                padding: 0.5rem 0.8rem;
+                font-size: 0.85rem;
+            }
+            
+            .message-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Patient Health Dashboard</h1>
+        <nav class="nav-bar">
+            <a href="/" class="nav-link">Dashboard</a>
+            <a href="/appointments" class="nav-link">Appointments</a>
+            <a href="/vitals" class="nav-link">Vitals</a>
+            <a href="/medications" class="nav-link">Medications</a>
+            <a href="/labs" class="nav-link">Lab Results</a>
+            <a href="/history" class="nav-link">Medical History</a>
+            <a href="/messages" class="nav-link active">Messages</a>
+        </nav>
+    </div>
+    
+    <div class="container">
+        <div class="page-title">
+            <h2>Messages</h2>
+            <p>Communication with your care team</p>
+        </div>
+        
+        {% for msg in messages %}
+        <div class="message-card {% if not msg[4] %}unread{% endif %}">
+            <div class="message-header">
+                <div>
+                    <div class="message-sender">{{ msg[0] }}</div>
+                    <div class="message-date">{{ msg[3].strftime('%B %d, %Y at %I:%M %p') }}</div>
+                </div>
+                <div class="message-actions">
+                    {% if not msg[4] %}
+                    <span class="unread-badge">Unread</span>
+                    <a href="/mark_read/{{ loop.index0 }}" class="mark-read-btn">Mark as Read</a>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="message-subject">{{ msg[1] }}</div>
+            <div class="message-text">{{ msg[2] }}</div>
+        </div>
+        {% endfor %}
+    </div>
+</body>
+</html>

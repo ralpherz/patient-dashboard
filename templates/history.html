@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medical History - Patient Health Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #1a1a1a;
+            color: #e0e0e0;
+            line-height: 1.6;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #ff6b00 0%, #ff8c00 100%);
+            color: white;
+            padding: 1.5rem 2rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        }
+        
+        .header h1 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        
+        .nav-bar {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .nav-link {
+            color: white;
+            text-decoration: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+            font-weight: 500;
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .nav-link:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        
+        .nav-link.active {
+            background-color: rgba(0, 0, 0, 0.3);
+            font-weight: 600;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+        
+        .page-title {
+            background: linear-gradient(135deg, #2d2d2d 0%, #1f1f1f 100%);
+            padding: 2rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            border-left: 4px solid #ff6b00;
+        }
+        
+        .page-title h2 {
+            color: #ff8c00;
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .history-card {
+            background: linear-gradient(135deg, #2d2d2d 0%, #1f1f1f 100%);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            border-left: 4px solid #ff6b00;
+            transition: transform 0.3s ease;
+        }
+        
+        .history-card:hover {
+            transform: translateX(5px);
+        }
+        
+        .history-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .condition-name {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #ff8c00;
+        }
+        
+        .diagnosis-date {
+            color: #888;
+            font-size: 0.9rem;
+        }
+        
+        .status-badge {
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        
+        .status-active {
+            background-color: #7c2d12;
+            color: #fb923c;
+            border: 1px solid #fb923c;
+        }
+        
+        .status-resolved {
+            background-color: #1a472a;
+            color: #4ade80;
+            border: 1px solid #4ade80;
+        }
+        
+        .history-notes {
+            color: #d0d0d0;
+            margin-top: 1rem;
+            padding: 1rem;
+            background-color: #2a2a2a;
+            border-radius: 5px;
+            border-left: 3px solid #ff6b00;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Patient Health Dashboard</h1>
+        <nav class="nav-bar">
+            <a href="/" class="nav-link">Dashboard</a>
+            <a href="/appointments" class="nav-link">Appointments</a>
+            <a href="/vitals" class="nav-link">Vitals</a>
+            <a href="/medications" class="nav-link">Medications</a>
+            <a href="/labs" class="nav-link">Lab Results</a>
+            <a href="/history" class="nav-link active">Medical History</a>
+            <a href="/messages" class="nav-link">Messages</a>
+        </nav>
+    </div>
+    
+    <div class="container">
+        <div class="page-title">
+            <h2>Medical History</h2>
+            <p>Your past and current medical conditions</p>
+        </div>
+        
+        {% for item in history %}
+        <div class="history-card">
+            <div class="history-header">
+                <div>
+                    <div class="condition-name">{{ item[0] }}</div>
+                    {% if item[1] %}
+                    <div class="diagnosis-date">Diagnosed: {{ item[1].strftime('%B %d, %Y') }}</div>
+                    {% endif %}
+                </div>
+                <span class="status-badge status-{{ item[2].lower() }}">{{ item[2] }}</span>
+            </div>
+            {% if item[3] %}
+            <div class="history-notes">
+                {{ item[3] }}
+            </div>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+</body>
+</html>

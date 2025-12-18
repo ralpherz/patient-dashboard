@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lab Results - Patient Health Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #1a1a1a;
+            color: #e0e0e0;
+            line-height: 1.6;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #ff6b00 0%, #ff8c00 100%);
+            color: white;
+            padding: 1.5rem 2rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        }
+        
+        .header h1 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        
+        .nav-bar {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .nav-link {
+            color: white;
+            text-decoration: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+            font-weight: 500;
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .nav-link:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        
+        .nav-link.active {
+            background-color: rgba(0, 0, 0, 0.3);
+            font-weight: 600;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+        
+        .page-title {
+            background: linear-gradient(135deg, #2d2d2d 0%, #1f1f1f 100%);
+            padding: 2rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            border-left: 4px solid #ff6b00;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .page-title-text h2 {
+            color: #ff8c00;
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .print-btn {
+            display: inline-block;
+            padding: 0.6rem 1.2rem;
+            background: linear-gradient(135deg, #ff6b00 0%, #ff8c00 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .print-btn:hover {
+            background: linear-gradient(135deg, #ff8c00 0%, #ffa500 100%);
+            transform: translateY(-2px);
+        }
+        
+        .lab-card {
+            background: linear-gradient(135deg, #2d2d2d 0%, #1f1f1f 100%);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            border-left: 4px solid #ff6b00;
+            transition: transform 0.3s ease;
+        }
+        
+        .lab-card:hover {
+            transform: translateX(5px);
+        }
+        
+        .lab-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .lab-test-name {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #ff8c00;
+        }
+        
+        .lab-date {
+            color: #888;
+            font-size: 0.9rem;
+        }
+        
+        .status-badge {
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        
+        .status-normal {
+            background-color: #1a472a;
+            color: #4ade80;
+            border: 1px solid #4ade80;
+        }
+        
+        .status-high {
+            background-color: #7c2d12;
+            color: #fb923c;
+            border: 1px solid #fb923c;
+        }
+        
+        .status-low {
+            background-color: #1e3a5f;
+            color: #60a5fa;
+            border: 1px solid #60a5fa;
+        }
+        
+        .lab-result {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            background-color: #2a2a2a;
+            border-radius: 5px;
+            margin-bottom: 0.5rem;
+        }
+        
+        .result-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #ff8c00;
+        }
+        
+        .normal-range {
+            color: #888;
+            font-size: 0.9rem;
+        }
+        
+        .lab-footer {
+            margin-top: 1rem;
+            color: #888;
+            font-size: 0.9rem;
+        }
+        
+        /* Print styles */
+        @media print {
+            body {
+                background-color: white;
+                color: black;
+            }
+            
+            .header, .nav-bar, .print-btn {
+                display: none;
+            }
+            
+            .page-title {
+                background: white;
+                border-left: 4px solid #ff6b00;
+                box-shadow: none;
+            }
+            
+            .page-title-text h2 {
+                color: #ff6b00;
+            }
+            
+            .lab-card {
+                background: white;
+                border: 1px solid #ddd;
+                box-shadow: none;
+                page-break-inside: avoid;
+            }
+            
+            .lab-test-name {
+                color: #ff6b00;
+            }
+            
+            .lab-result {
+                background-color: #f5f5f5;
+                border: 1px solid #ddd;
+            }
+            
+            .result-value {
+                color: #ff6b00;
+            }
+            
+            .status-badge {
+                border: 1px solid black;
+            }
+        }
+        
+        /* Mobile responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 1rem;
+            }
+            
+            .header h1 {
+                font-size: 1.4rem;
+            }
+            
+            .nav-bar {
+                gap: 0.5rem;
+            }
+            
+            .nav-link {
+                padding: 0.5rem 0.8rem;
+                font-size: 0.85rem;
+            }
+            
+            .page-title {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Patient Health Dashboard</h1>
+        <nav class="nav-bar">
+            <a href="/" class="nav-link">Dashboard</a>
+            <a href="/appointments" class="nav-link">Appointments</a>
+            <a href="/vitals" class="nav-link">Vitals</a>
+            <a href="/medications" class="nav-link">Medications</a>
+            <a href="/labs" class="nav-link active">Lab Results</a>
+            <a href="/history" class="nav-link">Medical History</a>
+            <a href="/messages" class="nav-link">Messages</a>
+        </nav>
+    </div>
+    
+    <div class="container">
+        <div class="page-title">
+            <div class="page-title-text">
+                <h2>Laboratory Results</h2>
+                <p>View your recent lab test results</p>
+            </div>
+            <button onclick="window.print()" class="print-btn">🖨️ Print Results</button>
+        </div>
+        
+        {% for lab in labs %}
+        <div class="lab-card">
+            <div class="lab-header">
+                <div>
+                    <div class="lab-test-name">{{ lab[1] }}</div>
+                    <div class="lab-date">{{ lab[0].strftime('%B %d, %Y') }}</div>
+                </div>
+                <span class="status-badge status-{{ lab[4].lower() }}">{{ lab[4] }}</span>
+            </div>
+            <div class="lab-result">
+                <div>
+                    <div class="result-value">{{ lab[2] }}</div>
+                    <div class="normal-range">Normal Range: {{ lab[3] }}</div>
+                </div>
+            </div>
+            <div class="lab-footer">
+                <strong>Ordered by:</strong> {{ lab[5] }}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</body>
+</html>
