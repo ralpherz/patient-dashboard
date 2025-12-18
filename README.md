@@ -161,7 +161,7 @@ This project demonstrates proficiency in:
 
 ## 👨‍💻 Author
 
-**Ralph** - [GitHub](https://github.com/ralpherz) | [LinkedIn](https://www.linkedin.com/in/ralphbeaupre/)
+**Ralph** - [GitHub](https://github.com/ralpherz) | [LinkedIn](https://linkedin.com/in/ralphbeaupre/)
 
 *Web Development Student at College of DuPage*  
 *Graduating May 2026*
