@@ -2,8 +2,6 @@
 
 A full-stack web application for managing patient health records, built with Flask and PostgreSQL. This dashboard provides an intuitive interface for viewing appointments, vital signs, medications, lab results, and medical history.
 
-![Dashboard Screenshot](screenshots/dashboard.png)
-
 ## 🚀 Features
 
 - **Dashboard Overview**: Quick summary of health information with key metrics
@@ -163,7 +161,7 @@ This project demonstrates proficiency in:
 
 ## 👨‍💻 Author
 
-**Ralph** - [GitHub](https://github.com/YOUR_USERNAME) | [LinkedIn](https://linkedin.com/in/YOUR_PROFILE)
+**Ralph** - [GitHub](https://github.com/ralpherz) | [LinkedIn](https://www.linkedin.com/in/ralphbeaupre/)
 
 *Web Development Student at College of DuPage*  
 *Graduating May 2026*
