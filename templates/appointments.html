@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Appointments - Patient Health Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #1a1a1a;
+            color: #e0e0e0;
+            line-height: 1.6;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #ff6b00 0%, #ff8c00 100%);
+            color: white;
+            padding: 1.5rem 2rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        }
+        
+        .header h1 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        
+        .nav-bar {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .nav-link {
+            color: white;
+            text-decoration: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+            font-weight: 500;
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .nav-link:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        
+        .nav-link.active {
+            background-color: rgba(0, 0, 0, 0.3);
+            font-weight: 600;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+        
+        .page-title {
+            background: linear-gradient(135deg, #2d2d2d 0%, #1f1f1f 100%);
+            padding: 2rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            border-left: 4px solid #ff6b00;
+        }
+        
+        .page-title h2 {
+            color: #ff8c00;
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .appointment-card {
+            background: linear-gradient(135deg, #2d2d2d 0%, #1f1f1f 100%);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            border-left: 4px solid #ff6b00;
+            transition: transform 0.3s ease;
+        }
+        
+        .appointment-card:hover {
+            transform: translateX(5px);
+        }
+        
+        .appointment-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .appointment-date {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #ff8c00;
+        }
+        
+        .appointment-time {
+            font-size: 1.1rem;
+            color: #d0d0d0;
+        }
+        
+        .status-badge {
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        
+        .status-scheduled {
+            background-color: #1e3a5f;
+            color: #60a5fa;
+            border: 1px solid #60a5fa;
+        }
+        
+        .status-completed {
+            background-color: #1a472a;
+            color: #4ade80;
+            border: 1px solid #4ade80;
+        }
+        
+        .status-cancelled {
+            background-color: #5c1a1a;
+            color: #f87171;
+            border: 1px solid #f87171;
+        }
+        
+        .appointment-details {
+            color: #d0d0d0;
+        }
+        
+        .appointment-details p {
+            margin: 0.5rem 0;
+        }
+        
+        .appointment-details strong {
+            color: #ff8c00;
+        }
+        
+        .location {
+            color: #888;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Patient Health Dashboard</h1>
+        <nav class="nav-bar">
+            <a href="/" class="nav-link">Dashboard</a>
+            <a href="/appointments" class="nav-link active">Appointments</a>
+            <a href="/vitals" class="nav-link">Vitals</a>
+            <a href="/medications" class="nav-link">Medications</a>
+            <a href="/labs" class="nav-link">Lab Results</a>
+            <a href="/history" class="nav-link">Medical History</a>
+            <a href="/messages" class="nav-link">Messages</a>
+        </nav>
+    </div>
+    
+    <div class="container">
+        <div class="page-title">
+            <h2>Appointments</h2>
+            <p>View all your scheduled and past appointments</p>
+        </div>
+        
+        {% for apt in appointments %}
+        <div class="appointment-card">
+            <div class="appointment-header">
+                <div>
+                    <div class="appointment-date">{{ apt[0].strftime('%B %d, %Y') }}</div>
+                    <div class="appointment-time">{{ apt[0].strftime('%I:%M %p') }}</div>
+                </div>
+                <span class="status-badge status-{{ apt[3].lower() }}">{{ apt[3] }}</span>
+            </div>
+            <div class="appointment-details">
+                <p><strong>Provider:</strong> {{ apt[1] }}</p>
+                <p><strong>Type:</strong> {{ apt[2] }}</p>
+                <p class="location">{{ apt[4] }}</p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</body>
+</html>

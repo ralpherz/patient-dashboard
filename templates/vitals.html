@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vitals - Patient Health Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #1a1a1a;
+            color: #e0e0e0;
+            line-height: 1.6;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #ff6b00 0%, #ff8c00 100%);
+            color: white;
+            padding: 1.5rem 2rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        }
+        
+        .header h1 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        
+        .nav-bar {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .nav-link {
+            color: white;
+            text-decoration: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+            font-weight: 500;
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .nav-link:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        
+        .nav-link.active {
+            background-color: rgba(0, 0, 0, 0.3);
+            font-weight: 600;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+        
+        .page-title {
+            background: linear-gradient(135deg, #2d2d2d 0%, #1f1f1f 100%);
+            padding: 2rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            border-left: 4px solid #ff6b00;
+        }
+        
+        .page-title h2 {
+            color: #ff8c00;
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .chart-container {
+            background: linear-gradient(135deg, #2d2d2d 0%, #1f1f1f 100%);
+            padding: 2rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            border-left: 4px solid #ff6b00;
+        }
+        
+        .chart-container h3 {
+            color: #ff8c00;
+            font-size: 1.3rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .chart-wrapper {
+            position: relative;
+            height: 400px;
+        }
+        
+        .vitals-table {
+            background: linear-gradient(135deg, #2d2d2d 0%, #1f1f1f 100%);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        thead {
+            background: linear-gradient(135deg, #ff6b00 0%, #ff8c00 100%);
+        }
+        
+        th {
+            padding: 1rem;
+            text-align: left;
+            color: white;
+            font-weight: 600;
+        }
+        
+        td {
+            padding: 1rem;
+            border-bottom: 1px solid #3d3d3d;
+            color: #d0d0d0;
+        }
+        
+        tr:last-child td {
+            border-bottom: none;
+        }
+        
+        tbody tr:hover {
+            background-color: #2a2a2a;
+        }
+        
+        .bp-value {
+            font-weight: bold;
+            color: #ff8c00;
+        }
+        
+        .bp-normal {
+            color: #4ade80;
+        }
+        
+        .bp-elevated {
+            color: #fb923c;
+        }
+        
+        .bp-high {
+            color: #f87171;
+        }
+        
+        /* Mobile responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 1rem;
+            }
+            
+            .chart-wrapper {
+                height: 300px;
+            }
+            
+            table {
+                font-size: 0.9rem;
+            }
+            
+            th, td {
+                padding: 0.5rem;
+            }
+            
+            .header h1 {
+                font-size: 1.4rem;
+            }
+            
+            .nav-bar {
+                gap: 0.5rem;
+            }
+            
+            .nav-link {
+                padding: 0.5rem 0.8rem;
+                font-size: 0.85rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Patient Health Dashboard</h1>
+        <nav class="nav-bar">
+            <a href="/" class="nav-link">Dashboard</a>
+            <a href="/appointments" class="nav-link">Appointments</a>
+            <a href="/vitals" class="nav-link active">Vitals</a>
+            <a href="/medications" class="nav-link">Medications</a>
+            <a href="/labs" class="nav-link">Lab Results</a>
+            <a href="/history" class="nav-link">Medical History</a>
+            <a href="/messages" class="nav-link">Messages</a>
+        </nav>
+    </div>
+    
+    <div class="container">
+        <div class="page-title">
+            <h2>Vital Signs History</h2>
+            <p>Track your blood pressure, heart rate, and weight over time</p>
+        </div>
+        
+        <!-- Blood Pressure Chart -->
+        <div class="chart-container">
+            <h3>Blood Pressure Trends</h3>
+            <div class="chart-wrapper">
+                <canvas id="bpChart"></canvas>
+            </div>
+        </div>
+        
+        <!-- Weight Chart -->
+        <div class="chart-container">
+            <h3>Weight Trends</h3>
+            <div class="chart-wrapper">
+                <canvas id="weightChart"></canvas>
+            </div>
+        </div>
+        
+        <div class="vitals-table">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Blood Pressure</th>
+                        <th>Heart Rate</th>
+                        <th>Weight</th>
+                        <th>Temperature</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for vital in vitals %}
+                    <tr>
+                        <td>{{ vital[0].strftime('%B %d, %Y') }}</td>
+                        <td>
+                            <span class="bp-value {% if vital[1] < 120 %}bp-normal{% elif vital[1] < 130 %}bp-elevated{% else %}bp-high{% endif %}">
+                                {{ vital[1] }}/{{ vital[2] }} mmHg
+                            </span>
+                        </td>
+                        <td>{{ vital[3] }} bpm</td>
+                        <td>{{ "%.1f"|format(vital[4]) }} lbs</td>
+                        <td>{{ "%.1f"|format(vital[5]) }}°F</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+    <script>
+        // Data prepared by Flask backend
+        const vitalsData = {{ chart_data | tojson }};
+        
+        // Blood Pressure Chart
+        const bpCtx = document.getElementById('bpChart').getContext('2d');
+        new Chart(bpCtx, {
+            type: 'line',
+            data: {
+                labels: vitalsData.map(v => v.date),
+                datasets: [
+                    {
+                        label: 'Systolic',
+                        data: vitalsData.map(v => v.systolic),
+                        borderColor: '#ff6b00',
+                        backgroundColor: 'rgba(255, 107, 0, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    },
+                    {
+                        label: 'Diastolic',
+                        data: vitalsData.map(v => v.diastolic),
+                        borderColor: '#ff8c00',
+                        backgroundColor: 'rgba(255, 140, 0, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        labels: {
+                            color: '#e0e0e0',
+                            font: {
+                                size: 14
+                            }
+                        }
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                        titleColor: '#ff8c00',
+                        bodyColor: '#e0e0e0',
+                        borderColor: '#ff6b00',
+                        borderWidth: 1
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: false,
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.1)'
+                        },
+                        ticks: {
+                            color: '#e0e0e0'
+                        }
+                    },
+                    x: {
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.1)'
+                        },
+                        ticks: {
+                            color: '#e0e0e0'
+                        }
+                    }
+                }
+            }
+        });
+        
+        // Weight Chart
+        const weightCtx = document.getElementById('weightChart').getContext('2d');
+        new Chart(weightCtx, {
+            type: 'line',
+            data: {
+                labels: vitalsData.map(v => v.date),
+                datasets: [{
+                    label: 'Weight (lbs)',
+                    data: vitalsData.map(v => v.weight),
+                    borderColor: '#ff6b00',
+                    backgroundColor: 'rgba(255, 107, 0, 0.1)',
+                    tension: 0.4,
+                    fill: true
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        labels: {
+                            color: '#e0e0e0',
+                            font: {
+                                size: 14
+                            }
+                        }
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                        titleColor: '#ff8c00',
+                        bodyColor: '#e0e0e0',
+                        borderColor: '#ff6b00',
+                        borderWidth: 1
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: false,
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.1)'
+                        },
+                        ticks: {
+                            color: '#e0e0e0'
+                        }
+                    },
+                    x: {
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.1)'
+                        },
+                        ticks: {
+                            color: '#e0e0e0'
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
