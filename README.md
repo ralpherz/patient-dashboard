@@ -156,12 +156,17 @@ The interface uses a professional healthcare color scheme with:
 
 ## 🔐 Security Considerations
 
-This is a portfolio/demonstration project. For production use, additional security measures would be required:
-- User authentication and authorization
+This is a portfolio/demonstration project, scoped to a single demo patient (no multi-user login yet). What's already implemented:
+
+- ✅ **SQL injection prevention** — all queries use parameterized placeholders (`%s`) rather than string interpolation, including every route that handles dynamic input (e.g. `mark_message_read`)
+
+For production use, the following would still be needed:
+
+- User authentication and multi-user support (currently scoped to one demo patient)
 - Password hashing (bcrypt/Argon2)
 - HTTPS encryption
-- HIPAA compliance measures
-- SQL injection prevention (using parameterized queries)
+- Environment-variable-based config instead of a plaintext DB password in `database.py`
+- Full HIPAA compliance measures (audit logging, access controls, encryption at rest)
 - Session management
 - CSRF protection
 
